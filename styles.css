@@ -1,0 +1,364 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Comic Neue', cursive;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: #333;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    animation: fadeInDown 0.8s ease-out;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    margin-bottom: 10px;
+}
+
+header p {
+    font-size: 1.2rem;
+    color: #f0f0f0;
+    font-weight: 400;
+}
+
+/* Main content */
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.display-area {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    margin-bottom: 30px;
+    min-width: 600px;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.letter-display {
+    margin-bottom: 30px;
+}
+
+.big-letter {
+    font-size: 6rem;
+    font-weight: bold;
+    color: #667eea;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    animation: bounce 0.6s ease-in-out;
+}
+
+.image-container {
+    width: 300px;
+    height: 250px;
+    border: 3px dashed #ddd;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    background: #f9f9f9;
+    position: relative;
+    overflow: hidden;
+}
+
+.alphabet-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 10px;
+    animation: zoomIn 0.5s ease-out;
+}
+
+.welcome-message {
+    text-align: center;
+    color: #666;
+}
+
+.welcome-message h2 {
+    margin-bottom: 10px;
+    color: #667eea;
+}
+
+.keyboard-hint {
+    margin-top: 15px;
+    padding: 10px 15px;
+    background: #667eea;
+    color: white;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    animation: pulse 2s infinite;
+}
+
+.word-display {
+    margin-top: 10px;
+}
+
+.word-text {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #764ba2;
+    text-transform: capitalize;
+}
+
+/* Controls */
+.controls {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.sound-btn, .next-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Comic Neue', cursive;
+}
+
+.sound-btn {
+    background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+    color: white;
+}
+
+.next-btn {
+    background: linear-gradient(45deg, #4ecdc4, #44a08d);
+    color: white;
+}
+
+.sound-btn:hover, .next-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.sound-btn:active, .next-btn:active {
+    transform: translateY(0);
+}
+
+/* Progress bar */
+.progress-bar {
+    width: 100%;
+    max-width: 600px;
+    height: 10px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+    width: 0%;
+    transition: width 0.5s ease;
+    border-radius: 5px;
+}
+
+/* Alphabet grid */
+.alphabet-grid {
+    display: grid;
+    grid-template-columns: repeat(13, 1fr);
+    gap: 10px;
+    max-width: 800px;
+    margin-bottom: 20px;
+}
+
+.alphabet-btn {
+    width: 50px;
+    height: 50px;
+    border: 2px solid white;
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Comic Neue', cursive;
+}
+
+.alphabet-btn:hover {
+    background: white;
+    color: #667eea;
+    transform: scale(1.1);
+}
+
+.alphabet-btn.learned {
+    background: #4ecdc4;
+    border-color: #4ecdc4;
+    animation: celebration 0.5s ease-out;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    color: white;
+    font-size: 1.1rem;
+    margin-top: 20px;
+}
+
+/* Animations */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes celebration {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2) rotate(5deg);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    
+    header h1 {
+        font-size: 2rem;
+    }
+    
+    .display-area {
+        min-width: auto;
+        width: 100%;
+        padding: 30px 20px;
+        min-height: 350px;
+    }
+    
+    .big-letter {
+        font-size: 4rem;
+    }
+    
+    .image-container {
+        width: 250px;
+        height: 200px;
+    }
+    
+    .alphabet-grid {
+        grid-template-columns: repeat(6, 1fr);
+        max-width: 400px;
+    }
+    
+    .alphabet-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 1rem;
+    }
+    
+    .controls {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .display-area {
+        padding: 20px 15px;
+    }
+    
+    .big-letter {
+        font-size: 3rem;
+    }
+    
+    .image-container {
+        width: 200px;
+        height: 160px;
+    }
+    
+    .alphabet-grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
