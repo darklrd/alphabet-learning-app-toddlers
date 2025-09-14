@@ -86,11 +86,9 @@ const CelebrationModal = ({ onClose }) => {
 
 // Image Display component
 const ImageDisplay = ({ imageUrl, altText, letter, isLoading, onImageLoad, onImageError, showEmojiFallback }) => {
-  console.log('🔄 ImageDisplay render - letter:', letter, 'isLoading:', isLoading, 'showEmojiFallback:', showEmojiFallback, 'imageUrl:', imageUrl);
   
   // Show emoji fallback only if explicitly requested (after image fails or times out)
   if (showEmojiFallback && letter) {
-    console.log('😀 Showing emoji fallback');
     const emoji = getEmojiForLetter(letter);
     return (
       <div className="emoji-fallback">
@@ -102,7 +100,6 @@ const ImageDisplay = ({ imageUrl, altText, letter, isLoading, onImageLoad, onIma
 
   // Show welcome message only when no letter is selected
   if (!letter) {
-    console.log('👋 Showing welcome message');
     return (
       <div className="welcome-message">
         <h2>Welcome! 👋</h2>
@@ -117,7 +114,6 @@ const ImageDisplay = ({ imageUrl, altText, letter, isLoading, onImageLoad, onIma
   // Always try to render the image if we have a URL and letter
   // Show loading spinner on top of the image container while loading
   if (imageUrl && letter) {
-    console.log('🎯 Rendering IMG element with src:', imageUrl, 'isLoading:', isLoading);
     return (
       <div style={{ position: 'relative', width: '100%', height: '100%' }}>
         {isLoading && (
@@ -197,11 +193,7 @@ function App() {
 
   // Speak letter using Web Speech API
   const speakLetter = useCallback((letter) => {
-    console.log('🔊 speakLetter called for:', letter);
-    
     if ('speechSynthesis' in window) {
-      console.log('✅ speechSynthesis API available');
-      
       // Cancel any ongoing speech
       speechSynthesis.cancel();
       
@@ -212,11 +204,7 @@ function App() {
       utterance.pitch = 1.2;
       utterance.volume = 0.8;
       
-      console.log('🎤 Speech text:', utterance.text);
-      
       const voices = speechSynthesis.getVoices() || [];
-      console.log('🎵 Available voices:', voices.length);
-      
       const childVoice = voices.find(voice => 
         voice.name && (
           voice.name.includes('child') || 
@@ -226,20 +214,10 @@ function App() {
       );
       
       if (childVoice) {
-        console.log('👶 Using child/female voice:', childVoice.name);
         utterance.voice = childVoice;
-      } else {
-        console.log('🔄 Using default voice');
       }
       
-      utterance.onstart = () => console.log('🎤 Speech started');
-      utterance.onend = () => console.log('🎤 Speech ended');
-      utterance.onerror = (e) => console.log('❌ Speech error:', e);
-      
-      console.log('▶️ Starting speech synthesis...');
       speechSynthesis.speak(utterance);
-    } else {
-      console.log('❌ speechSynthesis API not available');
     }
   }, []);
 
@@ -355,11 +333,8 @@ function App() {
 
   // Handle play sound
   const handlePlaySound = useCallback(() => {
-    console.log('🔊 Play sound button clicked, currentLetter:', currentLetter);
     if (currentLetter) {
       speakLetter(currentLetter);
-    } else {
-      console.log('⚠️ No current letter selected');
     }
   }, [currentLetter, speakLetter]);
 
@@ -426,7 +401,6 @@ function App() {
         if (image) {
           const img = new Image();
           img.src = image;
-          console.log('Preloading image:', image);
         }
       });
     };
