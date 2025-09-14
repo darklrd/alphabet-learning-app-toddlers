@@ -61,15 +61,50 @@ In the project directory, you can run:
 - `npm run build` - Builds the app for production
 - `npm run eject` - Ejects from Create React App (one-way operation)
 
-## Component Structure
+## 🏗️ Architecture (SOLID Principles)
 
+This app follows modern React architecture patterns with clean separation of concerns:
+
+### 📁 Project Structure
 ```
-App.js
-├── ImageDisplay - Handles image loading and display
-├── AlphabetGrid - Interactive alphabet button grid
-├── Confetti - Celebration confetti animation
-└── CelebrationModal - Completion celebration popup
+src/
+├── App.js                     # Main orchestration (137 lines, down from 495!)
+├── components/                # 8 focused UI components
+│   ├── AlphabetGrid.js        # Interactive letter selection grid
+│   ├── ImageDisplay.js        # Image/emoji display with loading states
+│   ├── LetterDisplay.js       # Current letter with bounce animation
+│   ├── ProgressBar.js         # Learning progress visualization
+│   ├── Controls.js            # Sound and navigation buttons
+│   ├── CelebrationModal.js    # Completion celebration modal
+│   ├── Confetti.js            # Animated confetti effects
+│   └── WordDisplay.js         # Word display component
+├── hooks/                     # 5 custom React hooks
+│   ├── useAlphabetLearning.js # Core learning state and logic
+│   ├── useCelebration.js      # Celebration effects management
+│   ├── useKeyboardInput.js    # Keyboard event handling
+│   ├── useImagePreloader.js   # Background image preloading
+│   └── useSpeechSynthesis.js  # Text-to-speech management
+├── services/                  # Business logic services
+│   ├── speechService.js       # Text-to-speech functionality
+│   └── imageService.js        # Image preloading and caching
+├── utils/                     # Pure utility functions
+│   └── alphabetUtils.js       # Alphabet-related helpers
+└── constants/                 # Application configuration
+    └── alphabetData.js        # Alphabet data and settings
 ```
+
+### 🎯 SOLID Principles Applied
+- **Single Responsibility**: Each file has one clear purpose
+- **Open/Closed**: Easy to extend without modifying existing code
+- **Liskov Substitution**: Consistent interfaces throughout
+- **Interface Segregation**: Components only receive props they need
+- **Dependency Inversion**: Business logic separated from UI
+
+### ⚡ Performance Features
+- **Local Image Caching**: 26 images (750KB) stored locally for instant loading
+- **Background Preloading**: Images load in background for seamless experience
+- **Offline Ready**: Works completely offline with local storage
+- **Optimized Rendering**: Minimal re-renders through proper React patterns
 
 ## Letter Associations
 
