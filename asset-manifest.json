@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/alphabet-learning-app-toddlers/static/css/main.025067f7.css",
+    "main.js": "/alphabet-learning-app-toddlers/static/js/main.58e1827e.js",
+    "index.html": "/alphabet-learning-app-toddlers/index.html",
+    "main.025067f7.css.map": "/alphabet-learning-app-toddlers/static/css/main.025067f7.css.map",
+    "main.58e1827e.js.map": "/alphabet-learning-app-toddlers/static/js/main.58e1827e.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.025067f7.css",
+    "static/js/main.58e1827e.js"
+  ]
+}
