@@ -26,8 +26,8 @@ function App() {
   
   // Initialize other hooks
   const alphabetLearning = useAlphabetLearning(celebration.celebrateNewLetter);
-  const imagePreloader = useImagePreloader();
-  const speechSynthesis = useSpeechSynthesis();
+  useImagePreloader(); // Initialize image preloading
+  useSpeechSynthesis(); // Initialize speech synthesis
 
   // Destructure values from hooks
   const {

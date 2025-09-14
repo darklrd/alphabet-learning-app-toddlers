@@ -62,7 +62,7 @@ export const useAlphabetLearning = (onNewLetterLearned) => {
     setTimeout(() => {
       speechService.speakLetter(letter);
     }, APP_CONFIG.SPEECH_DELAY_MS);
-  }, [learnedLetters, imageTimeoutId]);
+  }, [learnedLetters, imageTimeoutId, onNewLetterLearned]);
 
   /**
    * Get next unlearned letter
