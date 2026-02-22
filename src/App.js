@@ -43,7 +43,8 @@ function App() {
     handleImageError,
     handlePlaySound,
     handleNextLetter,
-    handleKeyDown
+    handleKeyDown,
+    handleReset
   } = alphabetLearning;
 
   const {
@@ -51,7 +52,8 @@ function App() {
     confettiElements,
     celebrateCompletion,
     closeCelebration,
-    removeConfetti
+    removeConfetti,
+    resetCelebration
   } = celebration;
 
   // Set up keyboard input handling
@@ -95,9 +97,10 @@ function App() {
           <WordDisplay word={currentData?.word} />
         </div>
         
-        <Controls 
+        <Controls
           onPlaySound={handlePlaySound}
           onNextLetter={handleNextLetter}
+          onReset={() => { handleReset(); resetCelebration(); }}
         />
         
         <ProgressBar learnedLetters={learnedLetters} />

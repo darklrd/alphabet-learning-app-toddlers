@@ -125,6 +125,21 @@ export const useAlphabetLearning = (onNewLetterLearned) => {
     }
   }, [displayLetter]);
 
+  /**
+   * Reset all learned letters and current letter state
+   */
+  const handleReset = useCallback(() => {
+    if (imageTimeoutId) {
+      clearTimeout(imageTimeoutId);
+      setImageTimeoutId(null);
+    }
+    setLearnedLetters(new Set());
+    setCurrentLetter('');
+    setIsLoading(false);
+    setShowEmojiFallback(false);
+    setKeyAnimation(false);
+  }, [imageTimeoutId]);
+
   // Clean up timeout on unmount
   useEffect(() => {
     return () => {
@@ -153,6 +168,7 @@ export const useAlphabetLearning = (onNewLetterLearned) => {
     handleImageError,
     handlePlaySound,
     handleNextLetter,
-    handleKeyDown
+    handleKeyDown,
+    handleReset
   };
 };

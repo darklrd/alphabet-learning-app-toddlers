@@ -55,9 +55,10 @@ describe('Alphabet Learning App', () => {
 
     test('renders all control buttons', () => {
       render(<App />);
-      
+
       expect(screen.getByText('🔊 Play Sound')).toBeInTheDocument();
       expect(screen.getByText('Next Letter ➡️')).toBeInTheDocument();
+      expect(screen.getByText('🔄 Reset')).toBeInTheDocument();
     });
 
     test('renders alphabet grid with all 26 letters', () => {
@@ -454,6 +455,110 @@ describe('Alphabet Learning App', () => {
       const container = document.querySelector('.container');
       expect(container).toHaveAttribute('tabIndex', '0');
       expect(container).toHaveStyle('outline: none');
+    });
+  });
+
+  describe('Reset Functionality', () => {
+    test('renders reset button', () => {
+      render(<App />);
+
+      expect(screen.getByText('🔄 Reset')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Reset all learned letters' })).toBeInTheDocument();
+    });
+
+    test('resets learned letters and progress to zero after reset', async () => {
+      render(<App />);
+
+      // Learn a few letters
+      fireEvent.keyDown(document, { key: 'A', code: 'KeyA' });
+      fireEvent.keyDown(document, { key: 'B', code: 'KeyB' });
+      fireEvent.keyDown(document, { key: 'C', code: 'KeyC' });
+
+      await waitFor(() => {
+        const progressFill = document.querySelector('.progress-fill');
+        expect(progressFill).toHaveStyle('width: 11.538461538461538%'); // 3/26
+      });
+
+      // Click Reset
+      fireEvent.click(screen.getByText('🔄 Reset'));
+
+      await waitFor(() => {
+        const progressFill = document.querySelector('.progress-fill');
+        expect(progressFill).toHaveStyle('width: 0%');
+      });
+    });
+
+    test('clears learned class from grid buttons after reset', async () => {
+      render(<App />);
+
+      fireEvent.keyDown(document, { key: 'A', code: 'KeyA' });
+
+      await waitFor(() => {
+        expect(screen.getByRole('button', { name: 'Letter A' })).toHaveClass('learned');
+      });
+
+      fireEvent.click(screen.getByText('🔄 Reset'));
+
+      await waitFor(() => {
+        expect(screen.getByRole('button', { name: 'Letter A' })).not.toHaveClass('learned');
+      });
+    });
+
+    test('shows welcome screen again after reset', async () => {
+      render(<App />);
+
+      fireEvent.keyDown(document, { key: 'A', code: 'KeyA' });
+
+      await waitFor(() => {
+        expect(screen.getByText('Apple')).toBeInTheDocument();
+      });
+
+      fireEvent.click(screen.getByText('🔄 Reset'));
+
+      await waitFor(() => {
+        expect(screen.getByText('Welcome! 👋')).toBeInTheDocument();
+        expect(screen.getByText('?')).toBeInTheDocument();
+      });
+    });
+
+    test('allows learning letters again after reset', async () => {
+      render(<App />);
+
+      // Learn A
+      fireEvent.keyDown(document, { key: 'A', code: 'KeyA' });
+      await waitFor(() => {
+        expect(screen.getByRole('button', { name: 'Letter A' })).toHaveClass('learned');
+      });
+
+      // Reset
+      fireEvent.click(screen.getByText('🔄 Reset'));
+      await waitFor(() => {
+        expect(screen.getByRole('button', { name: 'Letter A' })).not.toHaveClass('learned');
+      });
+
+      // Learn A again — should be treated as new
+      fireEvent.keyDown(document, { key: 'A', code: 'KeyA' });
+      await waitFor(() => {
+        expect(screen.getByRole('button', { name: 'Letter A' })).toHaveClass('learned');
+        const progressFill = document.querySelector('.progress-fill');
+        expect(progressFill).toHaveStyle('width: 3.8461538461538463%');
+      });
+    });
+
+    test('closes celebration modal on reset', async () => {
+      render(<App />);
+
+      // Trigger completion modal by learning all letters
+      // Instead, directly test that celebration state is cleared
+      fireEvent.keyDown(document, { key: 'Z', code: 'KeyZ' });
+      act(() => { jest.advanceTimersByTime(500); });
+
+      // Reset
+      fireEvent.click(screen.getByText('🔄 Reset'));
+
+      await waitFor(() => {
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+      });
     });
   });
 

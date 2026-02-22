@@ -180,7 +180,7 @@ main {
     margin-bottom: 30px;
 }
 
-.sound-btn, .next-btn {
+.sound-btn, .next-btn, .reset-btn {
     padding: 12px 24px;
     border: none;
     border-radius: 25px;
@@ -201,12 +201,17 @@ main {
     color: white;
 }
 
-.sound-btn:hover, .next-btn:hover {
+.reset-btn {
+    background: linear-gradient(45deg, #f7b731, #f0932b);
+    color: white;
+}
+
+.sound-btn:hover, .next-btn:hover, .reset-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
-.sound-btn:active, .next-btn:active {
+.sound-btn:active, .next-btn:active, .reset-btn:active {
     transform: translateY(0);
 }
 
