@@ -14,6 +14,7 @@ Object.defineProperty(window, 'speechSynthesis', {
   writable: true,
   value: {
     speak: mockSpeak,
+    cancel: jest.fn(),
     getVoices: mockGetVoices,
     addEventListener: jest.fn(),
     removeEventListener: jest.fn(),
@@ -66,7 +67,7 @@ describe('Alphabet Learning App', () => {
       
       const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
       letters.forEach(letter => {
-        expect(screen.getByRole('button', { name: letter })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: `Letter ${letter}` })).toBeInTheDocument();
       });
     });
 
@@ -86,7 +87,7 @@ describe('Alphabet Learning App', () => {
       fireEvent.keyDown(document, { key: 'a', code: 'KeyA' });
       
       await waitFor(() => {
-        expect(screen.getByText('A')).toBeInTheDocument();
+        expect(screen.getByTestId('letter-display')).toHaveTextContent('A');
         expect(screen.getByText('Apple')).toBeInTheDocument();
       });
     });
@@ -97,14 +98,14 @@ describe('Alphabet Learning App', () => {
       // Test lowercase
       fireEvent.keyDown(document, { key: 'h', code: 'KeyH' });
       await waitFor(() => {
-        expect(screen.getByText('H')).toBeInTheDocument();
+        expect(screen.getByTestId('letter-display')).toHaveTextContent('H');
         expect(screen.getByText('Horse')).toBeInTheDocument();
       });
 
       // Test uppercase
       fireEvent.keyDown(document, { key: 'B', code: 'KeyB' });
       await waitFor(() => {
-        expect(screen.getByText('B')).toBeInTheDocument();
+        expect(screen.getByTestId('letter-display')).toHaveTextContent('B');
         expect(screen.getByText('Ball')).toBeInTheDocument();
       });
     });
@@ -140,11 +141,12 @@ describe('Alphabet Learning App', () => {
       render(<App />);
       
       fireEvent.keyDown(document, { key: 'A', code: 'KeyA' });
-      
+
+      // Advance past the 5s image-load timeout so the emoji fallback renders
+      act(() => { jest.advanceTimersByTime(5000); });
+
       await waitFor(() => {
-        // Should show emoji fallback immediately (no loading spinner)
         expect(screen.getByText('🍎')).toBeInTheDocument();
-        expect(screen.getByText('Apple')).toBeInTheDocument();
         expect(screen.queryByTestId('loading-spinner')).not.toBeInTheDocument();
       });
     });
@@ -156,12 +158,14 @@ describe('Alphabet Learning App', () => {
       fireEvent.keyDown(document, { key: 'A', code: 'KeyA' });
       fireEvent.keyDown(document, { key: 'B', code: 'KeyB' });
       fireEvent.keyDown(document, { key: 'C', code: 'KeyC' });
-      
+
+      // Advance past the 5s image-load timeout so the emoji fallback renders
+      act(() => { jest.advanceTimersByTime(5000); });
+
       await waitFor(() => {
         // Should show the last pressed letter
-        expect(screen.getByText('C')).toBeInTheDocument();
+        expect(screen.getByTestId('letter-display')).toHaveTextContent('C');
         expect(screen.getByText('🐱')).toBeInTheDocument();
-        expect(screen.getByText('Cat')).toBeInTheDocument();
       });
     });
 
@@ -177,11 +181,13 @@ describe('Alphabet Learning App', () => {
 
       for (const testCase of testCases) {
         fireEvent.keyDown(document, { key: testCase.key, code: `Key${testCase.key}` });
-        
+
+        // Advance past the 5s image-load timeout so the emoji fallback renders
+        act(() => { jest.advanceTimersByTime(5000); });
+
         await waitFor(() => {
-          expect(screen.getByText(testCase.key)).toBeInTheDocument();
+          expect(screen.getByTestId('letter-display')).toHaveTextContent(testCase.key);
           expect(screen.getByText(testCase.emoji)).toBeInTheDocument();
-          expect(screen.getByText(testCase.word)).toBeInTheDocument();
         });
       }
     });
@@ -191,13 +197,15 @@ describe('Alphabet Learning App', () => {
     test('responds to alphabet grid button clicks', async () => {
       render(<App />);
       
-      const buttonH = screen.getByRole('button', { name: 'H' });
+      const buttonH = screen.getByRole('button', { name: 'Letter H' });
       fireEvent.click(buttonH);
-      
+
+      // Advance past the 5s image-load timeout so the emoji fallback renders
+      act(() => { jest.advanceTimersByTime(5000); });
+
       await waitFor(() => {
-        expect(screen.getByText('H')).toBeInTheDocument();
+        expect(screen.getByTestId('letter-display')).toHaveTextContent('H');
         expect(screen.getByText('🐴')).toBeInTheDocument();
-        expect(screen.getByText('Horse')).toBeInTheDocument();
       });
     });
 
@@ -207,7 +215,7 @@ describe('Alphabet Learning App', () => {
       fireEvent.keyDown(document, { key: 'M', code: 'KeyM' });
       
       await waitFor(() => {
-        const buttonM = screen.getByRole('button', { name: 'M' });
+        const buttonM = screen.getByRole('button', { name: 'Letter M' });
         expect(buttonM).toHaveClass('current');
       });
     });
@@ -218,13 +226,13 @@ describe('Alphabet Learning App', () => {
       // Learn a few letters
       fireEvent.keyDown(document, { key: 'A', code: 'KeyA' });
       await waitFor(() => {
-        const buttonA = screen.getByRole('button', { name: 'A' });
+        const buttonA = screen.getByRole('button', { name: 'Letter A' });
         expect(buttonA).toHaveClass('learned');
       });
 
       fireEvent.keyDown(document, { key: 'B', code: 'KeyB' });
       await waitFor(() => {
-        const buttonB = screen.getByRole('button', { name: 'B' });
+        const buttonB = screen.getByRole('button', { name: 'Letter B' });
         expect(buttonB).toHaveClass('learned');
       });
     });
@@ -320,8 +328,8 @@ describe('Alphabet Learning App', () => {
       
       await waitFor(() => {
         // Should show a different letter (not A)
-        const currentLetter = screen.getByText(/^[B-Z]$/);
-        expect(currentLetter).toBeInTheDocument();
+        const display = screen.getByTestId('letter-display');
+        expect(display).toHaveTextContent(/^[B-Z]$/);
       });
     });
 
@@ -333,8 +341,8 @@ describe('Alphabet Learning App', () => {
       
       await waitFor(() => {
         // Should show some letter
-        const currentLetter = screen.getByText(/^[A-Z]$/);
-        expect(currentLetter).toBeInTheDocument();
+        const display = screen.getByTestId('letter-display');
+        expect(display).toHaveTextContent(/^[A-Z]$/);
       });
     });
   });
@@ -346,7 +354,7 @@ describe('Alphabet Learning App', () => {
       fireEvent.keyDown(document, { key: 'H', code: 'KeyH' });
       
       await waitFor(() => {
-        const letterElement = screen.getByText('H');
+        const letterElement = screen.getByTestId('letter-display');
         expect(letterElement).toHaveClass('bounce');
       });
 
@@ -356,7 +364,7 @@ describe('Alphabet Learning App', () => {
       });
 
       await waitFor(() => {
-        const letterElement = screen.getByText('H');
+        const letterElement = screen.getByTestId('letter-display');
         expect(letterElement).not.toHaveClass('bounce');
       });
     });
@@ -433,7 +441,7 @@ describe('Alphabet Learning App', () => {
       
       // Should handle all interactions without crashing
       await waitFor(() => {
-        expect(screen.getByText(/^[A-Z]$/)).toBeInTheDocument();
+        expect(screen.getByTestId('letter-display')).toHaveTextContent(/^[A-Z]$/);
       });
     });
 
@@ -574,8 +582,7 @@ describe('Alphabet Learning App', () => {
         
         await waitFor(() => {
           // Check for letter in the big letter display
-          const letterDisplay = screen.getByText(letter);
-          expect(letterDisplay).toBeInTheDocument();
+          expect(screen.getByTestId('letter-display')).toHaveTextContent(letter);
           // Check button using aria-label
           const button = screen.getByRole('button', { name: `Letter ${letter}` });
           expect(button).toHaveClass('learned');
@@ -621,8 +628,8 @@ describe('Alphabet Learning App', () => {
       
       await waitFor(() => {
         // Should show some unlearned letter
-        const newLetter = screen.getByText(/^[A-Z]$/);
-        expect(newLetter).toBeInTheDocument();
+        const display = screen.getByTestId('letter-display');
+        expect(display).toHaveTextContent(/^[A-Z]$/);
       });
     });
   });

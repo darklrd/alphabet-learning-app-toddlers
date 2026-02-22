@@ -6,7 +6,7 @@ import React from 'react';
 const LetterDisplay = ({ letter, isAnimated }) => {
   return (
     <div className="letter-display">
-      <span className={`big-letter ${isAnimated ? 'bounce' : ''}`}>
+      <span data-testid="letter-display" className={`big-letter ${isAnimated ? 'bounce' : ''}`}>
         {letter || '?'}
       </span>
     </div>

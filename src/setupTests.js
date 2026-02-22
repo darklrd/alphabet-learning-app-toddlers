@@ -4,6 +4,22 @@
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
 
+// Mock speechSynthesis globally so SpeechService singleton sees it on construction
+global.speechSynthesis = {
+  speak: jest.fn(),
+  cancel: jest.fn(),
+  getVoices: jest.fn().mockReturnValue([]),
+  addEventListener: jest.fn(),
+  removeEventListener: jest.fn(),
+};
+global.SpeechSynthesisUtterance = jest.fn().mockImplementation(() => ({
+  text: '',
+  rate: 1,
+  pitch: 1,
+  volume: 1,
+  voice: null,
+}));
+
 // Mock IntersectionObserver
 global.IntersectionObserver = class IntersectionObserver {
   constructor() {}
