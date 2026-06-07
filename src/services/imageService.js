@@ -10,10 +10,11 @@ export class ImageService {
   }
 
   /**
-   * Preload all alphabet images for faster loading
+   * Preload all images across the given datasets for faster loading
+   * @param {Array<Object>} dataObjects - Topic data maps (item -> { image }); defaults to alphabet
    * @returns {Promise<void>} - Promise that resolves when all images are preloaded
    */
-  async preloadAllImages() {
+  async preloadAllImages(dataObjects = [alphabetData]) {
     if (this.isPreloading) {
       return;
     }
@@ -21,7 +22,8 @@ export class ImageService {
     this.isPreloading = true;
     console.log('🔄 Starting image preload...');
 
-    const preloadPromises = Object.values(alphabetData).map(({ image }) => {
+    const allEntries = dataObjects.flatMap(dataObject => Object.values(dataObject));
+    const preloadPromises = allEntries.map(({ image }) => {
       if (image && !this.preloadedImages.has(image)) {
         return this.preloadImage(image);
       }

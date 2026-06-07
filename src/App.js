@@ -1,130 +1,51 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 
 // Import components
-import {
-  AlphabetGrid,
-  CelebrationModal,
-  Confetti,
-  Controls,
-  ImageDisplay,
-  LetterDisplay,
-  ProgressBar,
-  WordDisplay
-} from './components';
+import { LearningView, TabBar } from './components';
 
 // Import hooks
-import { useAlphabetLearning } from './hooks/useAlphabetLearning';
-import { useCelebration } from './hooks/useCelebration';
-import { useKeyboardInput } from './hooks/useKeyboardInput';
 import { useImagePreloader } from './hooks/useImagePreloader';
 import { useSpeechSynthesis } from './hooks/useSpeechSynthesis';
 
+// Topic configuration (letters + numbers)
+import { TOPICS } from './constants/topics';
+
 function App() {
-  // Initialize celebration hook first so we can pass the callback
-  const celebration = useCelebration();
-  
-  // Initialize other hooks
-  const alphabetLearning = useAlphabetLearning(celebration.celebrateNewLetter);
-  useImagePreloader(); // Initialize image preloading
+  // Which topic (Letters / Numbers) is currently active
+  const [activeTopicId, setActiveTopicId] = useState(TOPICS[0].id);
+  const activeTopic = TOPICS.find(topic => topic.id === activeTopicId);
+
+  // Initialize shared, topic-agnostic concerns once
+  useImagePreloader(); // Preloads images for all topics
   useSpeechSynthesis(); // Initialize speech synthesis
 
-  // Destructure values from hooks
-  const {
-    currentLetter,
-    learnedLetters,
-    isLoading,
-    showEmojiFallback,
-    keyAnimation,
-    isAllLearned,
-    currentData,
-    displayLetter,
-    handleImageLoad,
-    handleImageError,
-    handlePlaySound,
-    handleNextLetter,
-    handleKeyDown,
-    handleReset
-  } = alphabetLearning;
-
-  const {
-    showCelebration,
-    confettiElements,
-    celebrateCompletion,
-    closeCelebration,
-    removeConfetti,
-    resetCelebration
-  } = celebration;
-
-  // Set up keyboard input handling
-  useKeyboardInput(handleKeyDown);
-
-  // Handle completion celebration
-  useEffect(() => {
-    if (isAllLearned && !showCelebration) {
-      setTimeout(() => {
-        celebrateCompletion();
-      }, 1000);
-    }
-  }, [isAllLearned, showCelebration, celebrateCompletion]);
-
   return (
-    <div className="container" tabIndex={0} style={{outline: 'none'}}>
+    <div className="container" tabIndex={0} style={{ outline: 'none' }}>
       <header>
-        <h1>🌟 Alphabet Learning Adventure! 🌟</h1>
-        <p>Type any letter on your keyboard to see its picture!</p>
+        <h1>🌟 Learning Adventure! 🌟</h1>
+        <p>Pick Letters or Numbers, then type or tap to start learning!</p>
       </header>
-      
+
+      <TabBar
+        topics={TOPICS}
+        activeTopicId={activeTopicId}
+        onSelect={setActiveTopicId}
+      />
+
       <main>
-        <div className="display-area">
-          <LetterDisplay 
-            letter={currentLetter} 
-            isAnimated={keyAnimation} 
-          />
-          
-          <div className="image-container">
-            <ImageDisplay
-              imageUrl={currentData?.image}
-              altText={currentData?.word}
-              letter={currentLetter}
-              isLoading={isLoading}
-              showEmojiFallback={showEmojiFallback}
-              onImageLoad={handleImageLoad}
-              onImageError={handleImageError}
-            />
-          </div>
-          
-          <WordDisplay word={currentData?.word} />
-        </div>
-        
-        <Controls
-          onPlaySound={handlePlaySound}
-          onNextLetter={handleNextLetter}
-          onReset={() => { handleReset(); resetCelebration(); }}
-        />
-        
-        <ProgressBar learnedLetters={learnedLetters} />
-        
-        <AlphabetGrid 
-          learnedLetters={learnedLetters}
-          currentLetter={currentLetter}
-          onLetterClick={displayLetter}
+        {/* Render only the active topic's view. Keyed by topic id so switching
+            tabs mounts a fresh view for that topic. */}
+        <LearningView
+          key={activeTopic.id}
+          topic={activeTopic}
+          isActive={true}
         />
       </main>
-      
+
       <footer>
-        <p>Keep typing to learn all 26 letters! 🎉</p>
+        <p>Keep going to learn them all! 🎉</p>
       </footer>
-
-      {/* Confetti elements */}
-      {confettiElements.map(id => (
-        <Confetti key={id} onComplete={() => removeConfetti(id)} />
-      ))}
-
-      {/* Celebration modal */}
-      {showCelebration && (
-        <CelebrationModal onClose={closeCelebration} />
-      )}
     </div>
   );
 }
