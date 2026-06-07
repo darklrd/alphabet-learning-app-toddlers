@@ -1,4 +1,12 @@
+// Alphabet-specific utilities. These keep their original signatures (used across the
+// app and tests) but delegate to the generic learningUtils bound to the alphabet topic.
 import { emojiMap, ALL_LETTERS } from '../constants/alphabetData';
+import {
+  getEmoji,
+  getRandomItem,
+  calculateProgress as calculateProgressGeneric,
+  isAllLearned
+} from './learningUtils';
 
 /**
  * Get emoji representation for a letter
@@ -6,7 +14,7 @@ import { emojiMap, ALL_LETTERS } from '../constants/alphabetData';
  * @returns {string} - The corresponding emoji
  */
 export const getEmojiForLetter = (letter) => {
-  return emojiMap[letter] || '📝';
+  return getEmoji(emojiMap, letter);
 };
 
 /**
@@ -25,13 +33,7 @@ export const isValidLetter = (key) => {
  * @returns {string} - A random letter
  */
 export const getRandomLetter = (learnedLetters) => {
-  const unlearned = ALL_LETTERS.filter(letter => !learnedLetters.has(letter));
-  
-  if (unlearned.length > 0) {
-    return unlearned[Math.floor(Math.random() * unlearned.length)];
-  }
-  
-  return ALL_LETTERS[Math.floor(Math.random() * ALL_LETTERS.length)];
+  return getRandomItem(ALL_LETTERS, learnedLetters);
 };
 
 /**
@@ -40,7 +42,7 @@ export const getRandomLetter = (learnedLetters) => {
  * @returns {number} - Progress percentage (0-100)
  */
 export const calculateProgress = (learnedLetters) => {
-  return (learnedLetters.size / ALL_LETTERS.length) * 100;
+  return calculateProgressGeneric(ALL_LETTERS, learnedLetters);
 };
 
 /**
@@ -49,5 +51,5 @@ export const calculateProgress = (learnedLetters) => {
  * @returns {boolean} - True if all letters are learned
  */
 export const isAllLettersLearned = (learnedLetters) => {
-  return learnedLetters.size === ALL_LETTERS.length;
+  return isAllLearned(ALL_LETTERS, learnedLetters);
 };

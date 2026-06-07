@@ -47,10 +47,10 @@ describe('Alphabet Learning App', () => {
     test('renders welcome message on initial load', () => {
       render(<App />);
       
-      expect(screen.getByText('🌟 Alphabet Learning Adventure! 🌟')).toBeInTheDocument();
-      expect(screen.getByText('Type any letter on your keyboard to see its picture!')).toBeInTheDocument();
+      expect(screen.getByText('🌟 Learning Adventure! 🌟')).toBeInTheDocument();
+      expect(screen.getByText('Pick Letters or Numbers, then type or tap to start learning!')).toBeInTheDocument();
       expect(screen.getByText('Welcome! 👋')).toBeInTheDocument();
-      expect(screen.getByText('Press any letter key to start learning!')).toBeInTheDocument();
+      expect(screen.getByText('Press any key to start learning!')).toBeInTheDocument();
       expect(screen.getByText('?')).toBeInTheDocument(); // Default letter display
     });
 
