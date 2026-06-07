@@ -6,6 +6,7 @@ import { APP_CONFIG } from '../constants/alphabetData';
  */
 export const useCelebration = () => {
   const [showCelebration, setShowCelebration] = useState(false);
+  const [hasCelebratedCompletion, setHasCelebratedCompletion] = useState(false);
   const [confettiElements, setConfettiElements] = useState([]);
 
   /**
@@ -46,7 +47,8 @@ export const useCelebration = () => {
    */
   const celebrateCompletion = useCallback(() => {
     setShowCelebration(true);
-    
+    setHasCelebratedCompletion(true);
+
     // Create multiple waves of confetti
     for (let i = 0; i < APP_CONFIG.BIG_CELEBRATION_CONFETTI_COUNT; i++) {
       setTimeout(() => {
@@ -67,12 +69,14 @@ export const useCelebration = () => {
    */
   const resetCelebration = useCallback(() => {
     setShowCelebration(false);
+    setHasCelebratedCompletion(false);
     setConfettiElements([]);
   }, []);
 
   return {
     // State
     showCelebration,
+    hasCelebratedCompletion,
     confettiElements,
     
     // Actions

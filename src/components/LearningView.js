@@ -45,6 +45,7 @@ const LearningView = ({ topic, isActive }) => {
 
   const {
     showCelebration,
+    hasCelebratedCompletion,
     confettiElements,
     celebrateCompletion,
     closeCelebration,
@@ -55,14 +56,16 @@ const LearningView = ({ topic, isActive }) => {
   // Only the active view captures keyboard input
   useKeyboardInput(handleKeyDown, isActive);
 
-  // Handle completion celebration
+  // Handle completion celebration — fire once per completion so closing the
+  // modal ("Keep Learning!") doesn't immediately re-trigger it (infinite loop).
   useEffect(() => {
-    if (isActive && isAllLearned && !showCelebration) {
-      setTimeout(() => {
+    if (isActive && isAllLearned && !hasCelebratedCompletion) {
+      const timer = setTimeout(() => {
         celebrateCompletion();
       }, 1000);
+      return () => clearTimeout(timer);
     }
-  }, [isActive, isAllLearned, showCelebration, celebrateCompletion]);
+  }, [isActive, isAllLearned, hasCelebratedCompletion, celebrateCompletion]);
 
   return (
     <div
