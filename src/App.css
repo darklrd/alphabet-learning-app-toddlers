@@ -131,8 +131,8 @@ main {
 }
 
 .image-container {
-    width: 300px;
-    height: 250px;
+    width: 360px;
+    height: 300px;
     border: 3px dashed #ddd;
     border-radius: 15px;
     display: flex;
@@ -181,7 +181,12 @@ main {
 }
 
 .emoji-fallback .emoji {
-    font-size: 4rem;
+    font-size: 3rem;
+    line-height: 1.15;
+    max-width: 100%;
+    word-break: break-all;
+    overflow-wrap: anywhere;
+    text-align: center;
     margin-bottom: 10px;
 }
 
@@ -492,8 +497,8 @@ footer {
     }
     
     .image-container {
-        width: 250px;
-        height: 200px;
+        width: 300px;
+        height: 260px;
     }
     
     .alphabet-grid {
@@ -524,8 +529,8 @@ footer {
     }
     
     .image-container {
-        width: 200px;
-        height: 160px;
+        width: 240px;
+        height: 210px;
     }
     
     .alphabet-grid {
