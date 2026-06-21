@@ -14,7 +14,10 @@ export const ALPHABET_TOPIC = {
   ariaPrefix: 'Letter',
   welcomeHint: 'Try pressing: A, B, C...',
   normalizeKey: (key) => key.toUpperCase(),
-  isValidKey: (key) => /^[A-Z]$/.test(key.toUpperCase())
+  isValidKey: (key) => /^[A-Z]$/.test(key.toUpperCase()),
+  // Opt this topic into the Find-the-Letter quiz mode. The quiz hook/components are
+  // topic-generic, so enabling Numbers later is just adding this flag to NUMBERS_TOPIC.
+  supportsQuiz: true
 };
 
 export const NUMBERS_TOPIC = {

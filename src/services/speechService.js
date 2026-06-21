@@ -66,6 +66,34 @@ export class SpeechService {
   }
 
   /**
+   * Speak an arbitrary phrase, e.g. "Find the letter A", "Try again", "Great job!".
+   * Used by the quiz where the text isn't a "symbol. word" pair.
+   * @param {string} text - The phrase to speak
+   * @param {Object} options - Speech options
+   */
+  speakText(text, options = {}) {
+    if (!this.isAvailable || !text) {
+      return;
+    }
+
+    // Cancel any ongoing speech
+    speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance();
+    utterance.text = text;
+    utterance.rate = options.rate || 0.8;
+    utterance.pitch = options.pitch || 1.2;
+    utterance.volume = options.volume || 0.8;
+
+    const childVoice = this.getChildFriendlyVoice();
+    if (childVoice) {
+      utterance.voice = childVoice;
+    }
+
+    speechSynthesis.speak(utterance);
+  }
+
+  /**
    * Speak a letter and its associated word (back-compat wrapper around speak()).
    * @param {string} letter - The letter to speak
    * @param {Object} options - Speech options
