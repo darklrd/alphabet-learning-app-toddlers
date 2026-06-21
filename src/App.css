@@ -537,3 +537,284 @@ footer {
         grid-template-columns: repeat(5, 1fr);
     }
 }
+
+/* ============================== Quiz mode ============================== */
+
+/* Learn / Quiz mode switch (mirrors .tab-bar, slightly smaller) */
+.mode-toggle {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.mode-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 22px;
+    border: 3px solid white;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border-radius: 14px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Comic Neue', cursive;
+}
+
+.mode-btn:hover {
+    transform: scale(1.05);
+}
+
+.mode-btn.active {
+    background: white;
+    color: #667eea;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+.mode-emoji {
+    font-size: 1.3rem;
+}
+
+/* Quiz card (mirrors .display-area) */
+.quiz-view {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+    width: 100%;
+    max-width: 600px;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.quiz-prompt-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.quiz-prompt {
+    font-size: 2.5rem;
+    color: #667eea;
+    margin: 0;
+}
+
+.quiz-prompt-target {
+    font-size: 3.5rem;
+    color: #ff6b6b;
+    font-weight: bold;
+}
+
+.quiz-repeat-btn {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Comic Neue', cursive;
+    background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+    color: white;
+}
+
+.quiz-repeat-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Answer choices (large 2x2 grid for young children) */
+.quiz-choice-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.quiz-choice {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    border: 3px solid #667eea;
+    background: #f9f9f9;
+    color: #667eea;
+    border-radius: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Comic Neue', cursive;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quiz-choice-letter {
+    font-size: 3rem;
+    line-height: 1;
+}
+
+.quiz-choice:hover:not(:disabled):not(.correct):not(.incorrect) {
+    transform: scale(1.06);
+    background: #667eea;
+    color: white;
+}
+
+.quiz-choice:disabled {
+    cursor: default;
+}
+
+.quiz-choice.correct {
+    background: #4ecdc4;
+    border-color: #4ecdc4;
+    color: white;
+    animation: celebration 0.5s ease-out;
+}
+
+.quiz-choice.incorrect {
+    background: #ff6b6b;
+    border-color: #ff6b6b;
+    color: white;
+}
+
+.quiz-choice-mark {
+    position: absolute;
+    top: 6px;
+    right: 10px;
+    font-size: 1.4rem;
+}
+
+/* Score + progress line */
+.quiz-status {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 14px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #667eea;
+}
+
+/* Feedback live region */
+.quiz-feedback {
+    min-height: 2rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    color: #764ba2;
+}
+
+.quiz-feedback.correct {
+    color: #2aa79b;
+}
+
+.quiz-feedback.incorrect {
+    color: #ee5a52;
+}
+
+/* Completion summary */
+.quiz-complete {
+    text-align: center;
+    gap: 20px;
+}
+
+.quiz-complete-title {
+    font-size: 2.2rem;
+    color: #667eea;
+    margin: 0;
+}
+
+.quiz-complete-score {
+    font-size: 1.6rem;
+    color: #2aa79b;
+    font-weight: bold;
+    margin: 0;
+}
+
+.quiz-complete-actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.quiz-play-again-btn,
+.quiz-back-btn {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Comic Neue', cursive;
+    color: white;
+}
+
+.quiz-play-again-btn {
+    background: linear-gradient(45deg, #4ecdc4, #44a08d);
+}
+
+.quiz-back-btn {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+}
+
+.quiz-play-again-btn:hover,
+.quiz-back-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+    .quiz-view {
+        width: 100%;
+        padding: 30px 20px;
+        min-height: 350px;
+    }
+
+    .quiz-prompt {
+        font-size: 2rem;
+    }
+
+    .quiz-prompt-target {
+        font-size: 2.8rem;
+    }
+
+    .quiz-choice {
+        width: 100px;
+        height: 100px;
+    }
+
+    .quiz-choice-letter {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .quiz-choice-grid {
+        gap: 14px;
+    }
+
+    .quiz-choice {
+        width: 80px;
+        height: 80px;
+    }
+
+    .quiz-choice-letter {
+        font-size: 2rem;
+    }
+
+    .quiz-status {
+        gap: 18px;
+        font-size: 1.05rem;
+    }
+}
